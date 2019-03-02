@@ -162,9 +162,3 @@ for idx in range(10):
 plt.show()
 plt.close()
 
-
-# In[ ]:
-
-
-
-
