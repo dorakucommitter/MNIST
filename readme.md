@@ -33,22 +33,34 @@ Linuxbrewを使えば楽かも知れない、と思いつつ試してはいま�
         $ brew install pyenvß
         $ brew install pyenv-virtualenv
         ```
-    - Linux
-        - pyenv-virtualenvのインストール
+    - Linux  
+pyenvとpyenv-virtualenvのインストール順には依存関係があるみたいです。
+        - pyenvのインストール
             ```bash
             $ git clone https://github.com/pyenv/pyenv.git ~/.pyenv
-            $ git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
             ```
-        - $HOME/.bashrcへの追加
+        - $HOME/.bashrcへの追加 その1
             ```bash
             export PYENV_ROOT=$HOME/.pyenv
             export PATH=$PYENV_ROOT/bin:$PATH
             if command -v pyenv 1>/dev/null 2>&1; then
                 eval "$(pyenv init -)"
             fi
+            ```
+        - $HOME/.bashrcの再読込み その1
+            ```bash
+            $ source $HOME/.bashrc
+            ```
+
+        - pyenv-virtualenvのインストール
+            ```bash
+            $ git clone https://github.com/pyenv/pyenv-virtualenv.git $(pyenv root)/plugins/pyenv-virtualenv
+            ```
+        - $HOME/.bashrcへの追加 その2
+            ```bash
             eval "$(pyenv virtualenv-init -)"
             ```
-        - $HOME/.bashrcの再読込み
+        - $HOME/.bashrcの再読込み その2
             ```bash
             $ source $HOME/.bashrc
             ```
@@ -126,3 +138,13 @@ $ jupyter notebook --config=./jupyter_nb_cfg.py --no-browser
 backend : TkAgg
 ```
 
+## pyenvの仮想環境でTkinterがimportできない
+
+python環境インストール時にTkのビルドライブラリをインストールしていないと起こる現象らしいです。
+
+```
+$ sudo apt-get install tk-dev
+$ pyenv install 3.6.8
+```
+
+のような感じで、Tkライブラリインストール後、python環境を新規インストールまたは上書きインストールするとimport出来るようになるはずです。
