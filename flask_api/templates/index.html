@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+  <title>MNIST Predict Page</title>
+  <style>
+    #canvas {
+      border: solid 4px #000;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="row">
+      <div><canvas id="canvas" width="280" height="280"></canvas></div>
+      <div><button id="btn_beginner">beginner algorithm</button></div>
+      <div id="beginner_result"></div>
+    </div>
+  </div>
+</body>
+<script>
+//<!--
+var canvas = document.getElementById("canvas");
+
+var btn_beginner = document.getElementById('btn_beginner');
+btn_beginner.addEventListener('click', function() {
+  var context = canvas.getContext('2d');
+  $.ajax({
+    url:'/api/predict/beginner',
+    type:'POST',
+    dataType: 'json',
+    contentType: 'application/json',
+    data: JSON.stringify({
+      'image': canvas.toDataURL('image/png')
+    })
+  })
+  // Ajaxリクエストが成功した時発動
+  .done( (result) => {
+      $('#beginner_result').html(result["predict_beginner"]);
+      console.log(result["predict_beginner"]);
+  })
+  // Ajaxリクエストが失敗した時発動
+  .fail( (result) => {
+      $('#beginner_result').html(result);
+      console.log(result);
+  })
+  // Ajaxリクエストが成功・失敗どちらでも発動
+  .always( (data) => {
+
+  });
+})
+        
+startX=0;
+startY=0;
+mousedown=false;
+
+/* よくわからないけど、マウス位置微調整 */
+/**
+ * e.pageX, e.pageYはブラウザ表示領域左上端が始点で、canvasの描画はcanvas領域
+ * の左上端が始点だからずれる？
+ */
+deltaX=-10;
+deltaY=-10;
+
+canvas.onmousedown = function(e) {
+  startX = e.pageX + deltaX;
+  startY = e.pageY + deltaY;
+  mousedown = true;
+  console.log(startX, startY);
+}
+
+canvas.onmousemove = function(e) {
+  if(mousedown) {
+      draw(e.pageX + deltaX, e.pageY + deltaY);
+  }
+  canvas.onmouseup = function(e) {
+        mousedown = false;
+    }
+}
+
+function draw(x, y) {
+  var context = canvas.getContext('2d');
+  context.beginPath();
+  context.fillRect(x, y, 16, 16);
+
+  context.closePath();
+  context.stroke();
+  //次の座標の出発点を設定
+  startX = x;
+  startY = y;
+}
+// -->
+</script>
+</html>

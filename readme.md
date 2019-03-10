@@ -30,7 +30,7 @@ Linuxbrewを使えば楽かも知れない、と思いつつ試してはいま�
 1. インストール
     - macOS
         ```bash
-        $ brew install pyenvß
+        $ brew install pyenv
         $ brew install pyenv-virtualenv
         ```
     - Linux  
@@ -110,7 +110,7 @@ $ pip install -r requirement.txt
 か
 
 ```bash
-$ pip install --upgrade matplotlib numpy tensorflow jupyter
+$ pip install --upgrade matplotlib numpy flask tensorflow jupyter pillow opencv-python
 ```
 
 を実行してライブラリをインストールします。  

@@ -1,0 +1,84 @@
+{% extends "base.html" %}
+{% block content %}
+<style>
+  #canvas {
+    border: solid 10px #000;
+  }
+</style>
+
+<form name="input_form">
+  <canvas id="canvas" width="280" height="280"></canvas><br>
+  <button id="btn">送信</button>
+</form>
+
+{% if predict %}
+  結果：<p>{{ predict }}</p>
+{% endif %}
+
+<script>
+//<!--
+  var btn = document.getElementById('btn');
+
+  btn.addEventListener('click', function() {
+    var form = document.getElementById("input_form");
+    var form_data = new FormData(form);
+
+    form_data.append('test1', 'test message');
+    form_data.append('test2', 'test message2');
+    //alert("botann");
+    var context = canvas.getContext('2d');
+    var base64 = canvas.toDataURL('image/png');
+
+    form_data.append('img', base64);
+
+    // ------------------------------------------------------------
+    // XMLHttpRequest オブジェクトを作成
+    // ------------------------------------------------------------
+    var xhr = new XMLHttpRequest();
+    
+    // ------------------------------------------------------------
+    // 「POST メソッド」「接続先 URL」を指定
+    // ------------------------------------------------------------
+    xhr.open("POST" , "/send");
+    
+    // ------------------------------------------------------------
+    // 送信データに FormData を指定、XHR 通信を開始する
+    // ------------------------------------------------------------
+    xhr.send(form_data);
+  })
+
+  var canvas = document.getElementById("canvas");
+  startX=0;
+  startY=0;
+  mousedown=false;
+
+  canvas.onmousedown = function(e) {
+    startX = e.pageX;
+    startY = e.pageY;
+    mousedown = true;
+    console.log(startX, startY);
+	}
+
+  canvas.onmousemove = function(e) {
+    if(mousedown) {
+	    draw(e.pageX, e.pageY);
+    }
+    canvas.onmouseup = function(e) {
+		  mousedown = false;
+	  }
+  }
+
+  function draw(x, y) {
+  	var context = canvas.getContext('2d');
+  	context.beginPath();
+    context.fillRect(x, y, 16, 16);
+
+    context.closePath();
+    context.stroke();
+    //次の座標の出発点を設定
+    startX = x;
+    startY = y;
+	}
+// -->
+</script>
+{% endblock %}
