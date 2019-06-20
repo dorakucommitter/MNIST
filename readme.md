@@ -4,7 +4,11 @@ Pythonは、割とライブラリのバージョン縛りがあったりして�
 ということで、素のPythonではなく、Pythonの実行環境を管理するツールをインストールした上で、Python実行環境を用意します。  
 ファイル容量は大きいですが、管理が楽なのでanacondaがおすすめです。
 
+
 ## anacondaを使う場合
+
+anacondaのpythonを使う場合、vimのpython系プラグインを使おうとしたときにライブラリまわりで問題になる可能性があります。  
+vim使いで、ライブラリパス等の扱いに詳しくない人は使わない方が、後々、変なことで悩まずに住むかもです。
 
 1. python3.6実行環境をの作成
     ```bash
@@ -23,12 +27,12 @@ Pythonは、割とライブラリのバージョン縛りがあったりして�
 
 3. インストールしたAnacondaのメンテ
     * Anaconda自体のアップデート
-        ```
+        ```bash
         $ conda update -n base conda
         ```
 
     * Anacondaの全パッケージのアップデート
-        ```
+        ```bash
         $ conda update --all
         ```
 
@@ -114,18 +118,15 @@ $ pip install --upgrade tensorflow chainer sklearn opencv-python matplotlib nump
 # ライブラリのインストール
 
 ```bash
-$ pip install -r requirement.txt
+$ sudo apt-get install graphviz
+$ pip install --upgrade \
+    tensorflow keras chainer sklearn \
+    opencv-python pillow matplotlib numpy \
+    pydot-ng graphviz \
+    jupyter flask
 ```
 
-か
-
-```bash
-$ pip install --upgrade matplotlib numpy flask tensorflow chainer sklearn keras jupyter pillow pydot opencv-python
-```
-
-を実行してライブラリをインストールします。  
-ちなみに、後者の方法だと各ライブラリの最新版がインストールされるため、サンプルスクリプトが動かないかもしれない罠があります。  
-前者は前者で、過去バージョンが利用できなくたっていてエラーになることが、たまにあるので、臨機応変な対応が必要な場合があります。
+requirement.txtをgithubにおいておくと、ライブラリバージョンが抱える脆弱性を指摘するメールが鬱陶しいので、pipコマンドのみにしました。
 
 
 # その他
